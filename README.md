@@ -17,7 +17,7 @@ Le backend se décompose en 4 parties :
 
 L'ensemble de la plateforme est intégré dans 4 conteneurs Docker respectifs.
 
-Afin de sécuriser les connexions, les échanges entre les conteneurs se font via un réseau virtuel ``iot_network`` en mode bridge. Ce type de configuration évite les attaques de type "man in the middle" car les conteneurs ont un accès direct les uns entre les autres sans possibilité de voir le trafic sur ce réseau interne. 
+Afin de sécuriser les connexions, les échanges entre les conteneurs se font via un réseau virtuel ``iot_network`` en mode *bridge*. Ce type de configuration évite les attaques de type "man in the middle" car les conteneurs ont un accès direct les uns entre les autres sans possibilité de voir le trafic sur ce réseau interne. 
 
 Ainsi, les seules connexions qui se font sur le réseau WiFi sont entre le backend et l'ESP32 pour envoyer via une requête POST au déclenchement d'un évènement (mouvement capteur IR ou pression bouton), entre le backend et le navigateur de l'utilisateur qui veut consulter le frontend (authentification username/password), entre le serveur ntfy et l'application mobile ntfy sur le téléphone de l'utilisateur. 
 
@@ -63,6 +63,8 @@ On peut utiliser ``button`` ou ``motion`` comme type d'évènement et spécifier
 C'est cette forme de requête qui est utilisée cotée ESP32.
 
 La documentation de l'API est disponible à l'addresse suivante : ``http://localhost:8000/docs``
+
+<img src="screen/screen8.png" width="800">
 
 ### Frontend - Application WEB
 
