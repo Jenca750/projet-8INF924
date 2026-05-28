@@ -96,6 +96,4 @@ Dans l'onglet "Notifications", il faut ensuite s'abonner au topic ``doorbell``.
 
 On peut ensuite voir les notifications (et les recevoir sous forme de notifications push) dans le channel de message ainsi créé.
 
-<img src="screen/screen7.png" width="200">
-
-<img src="screen/screen6.png" width="200">
+<img src="screen/screen7.png" width="200"> <img src="screen/screen6.png" width="200">
