@@ -23,6 +23,8 @@ Ainsi, les seules connexions qui se font sur le réseau WiFi sont entre le backe
 
 ### Quickstart Docker
 
+Tout d'abord, il faut configurer les identifiants de la base de données Postgres, pour ce faire, copier le fichier à la racine ``.env.example`` en ``.env`` et changer le mot de passe de la base de données.
+
 Pour lancer le projet au premier démarrage, il suffit d'exécuter la commande docker suivante :
 
 ```bash
@@ -42,7 +44,7 @@ Il est recommandé de changer ce mot de passe directement depuis le frontend sur
 
 > Les requêtes envoyés par l'ESP32 nécessitent une clée API. Celle-ci est stockée dans le fichier ``api/.env``.
 
-Au démarrage, si aucun fichier ``.env`` n'existe, celui-ci sera créé automatiquement avec une clée API dans la variable ``ESP32_SECRET_TOKEN``, il est possible d'utiliser directement cette clée API (générée différement à chaque instanciation) ou bien d'en spécifier une dans le fichier.
+Au démarrage, si aucun fichier ``api/.env`` n'existe, celui-ci sera créé automatiquement avec une clée API dans la variable ``ESP32_SECRET_TOKEN``, il est possible d'utiliser directement cette clée API (générée différement à chaque instanciation) ou bien d'en spécifier une dans le fichier.
 
 Pour créer un nouvel évènement, il suffit d'envoyer une requête sur la route suivante : ``/api/events``
 
