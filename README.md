@@ -88,4 +88,14 @@ Pour utiliser ntfy, il suffit de télécharger l'application sur son téléphone
 
 Une fois l'application ouverte, il faut se rendre dans "Settings" puis sur "+ Add user" et renseigner l'adresse du serveur (remplacer ``localhost`` par l'IP du serveur backend) ainsi que les informations d'identification de l'utilisateur.
 
+<img src="screen/screen4.png" width="200">
+
 Dans l'onglet "Notifications", il faut ensuite s'abonner au topic ``doorbell``.
+
+<img src="screen/screen5.png" width="200">
+
+On peut ensuite voir les notifications (et les recevoir sous forme de notifications push) dans le channel de message ainsi créé.
+
+<img src="screen/screen7.png" width="200">
+
+<img src="screen/screen6.png" width="200">
