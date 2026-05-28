@@ -2,6 +2,12 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
 from database import Base
 
+"""
+This file defines the database models for the application using SQLAlchemy ORM.
+- EventLog: represents an event that occurred (e.g., motion detected, button pressed)
+- User: represents a user of the system with authentication credentials and admin status
+"""
+
 class EventLog(Base):
     __tablename__ = "event_logs"
 

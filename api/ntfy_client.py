@@ -21,7 +21,11 @@ SYSTEM_PASS = os.getenv("NTFY_SYSTEM_PASS")
 
 _system_user_created = False
 
+
 def _ensure_system_user():
+    """
+    Check if the system user exists in ntfy, and create it if not. This is necessary to allow the backend to push notifications via HTTP with proper authentication.
+    """
     global _system_user_created
     if _system_user_created:
         return
@@ -30,8 +34,15 @@ def _ensure_system_user():
         ntfy_add_user(SYSTEM_USER, SYSTEM_PASS, role="admin")
     _system_user_created = True
 
+# called via API endpoint : /api/events POST
 def push_notification(title: str, message: str, tags: list = None):
-    """Push a notification to the ntfy topic via HTTP using system backend user"""
+    """
+    Push a notification to the ntfy topic via HTTP using system backend user
+    args:
+    - title [str]: notification title
+    - message [str]: notification message/body
+    - tags [list]: optional list of tags to include with the notification (e.g. ["doorbell", "front_door"])
+    """
     _ensure_system_user()
     
     headers = {
@@ -52,12 +63,18 @@ def push_notification(title: str, message: str, tags: list = None):
         return False
 
 def _run_ntfy_cli(cmd: str, env: dict = None):
+    """
+    Runs an ntfy CLI command inside the ntfy docker container using docker exec. This is used for user management since ntfy doesn't expose a user management API. The env parameter can be used to pass environment
+    args:
+    - cmd [str]: the ntfy CLI command to run (e.g. "user add username")
+    - env [dict]: optional dict of environment variables to pass to the command (e.g. {"NTFY_PASSWORD": "newpassword"})
+    """
     if not docker_client:
         logger.error("Docker client not initialized. Cannot run ntfy CLI.")
         return False, "Docker client not initialized"
     
     try:
-        container = docker_client.containers.get(DOCKER_NTFY_CONTAINER)
+        container = docker_client.containers.get(DOCKER_NTFY_CONTAINER) # get the ntfy container by name
         full_cmd = f"ntfy {cmd}"
         exit_code, output = container.exec_run(full_cmd, environment=env)
         
@@ -71,8 +88,15 @@ def _run_ntfy_cli(cmd: str, env: dict = None):
         logger.error(f"Error executing ntfy CLI: {e}")
         return False, str(e)
 
+# called via API endpoint : /api/users POST
 def ntfy_add_user(username: str, password: str, role: str = "user"):
-    """Adds a user to ntfy via docker exec"""
+    """
+    Adds a user to ntfy via docker exec
+    args:
+    - username [str]: the username of the new user
+    - password [str]: the password for the new user
+    - role [str]: the role of the new user, either "user" or "admin". Admins have global read/write access, while regular users can be given topic-specific access.
+    """
     success, output = _run_ntfy_cli(f"user add --role={role} {username}", env={"NTFY_PASSWORD": password})
     if success:
         # Give user read access to the specific topic (admins already have global read/write)
@@ -80,10 +104,21 @@ def ntfy_add_user(username: str, password: str, role: str = "user"):
             _run_ntfy_cli(f"access {username} {NTFY_TOPIC} read-only")
     return success
 
+# called via API endpoint : /api/users/{user_id}/password PUT
 def ntfy_change_password(username: str, new_password: str):
-    """Changes a user's password in ntfy via docker exec"""
+    """
+    Changes a user's password in ntfy via docker exec
+    args:
+    - username [str]: the username of the user whose password to change
+    - new_password [str]: the new password for the user
+    """
     return _run_ntfy_cli(f"user change-pass {username}", env={"NTFY_PASSWORD": new_password})
 
+# called via API endpoint : /api/users/{user_id} DELETE
 def ntfy_delete_user(username: str):
-    """Deletes a user from ntfy via docker exec"""
+    """
+    Deletes a user from ntfy via docker exec
+    args:
+    - username [str]: the username of the user to delete
+    """
     return _run_ntfy_cli(f"user del {username}")

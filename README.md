@@ -74,6 +74,8 @@ Une fois connecté au frontend, il est possible de voir l'historique des évène
 
 <img src="screen/screen1.png" width="800">
 
+*La clée de chiffrement des tokens JWT peut être manuellement définie dans ``SECRET_KEY`` (``api/.env``).*
+
 Il est possible d'accéder à l'onglet "Profile" pour modifier son propre mot de passe.
 
 <img src="screen/screen3.png" width="800">

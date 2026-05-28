@@ -50,7 +50,7 @@ services:
   frontend:
     build:
       context: ./app
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     container_name: iot_frontend
     volumes:
       - ./app:/app

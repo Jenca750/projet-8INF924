@@ -2,6 +2,11 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
+"""
+Pydantic models for request and response validation in FastAPI.
+These models define the expected structure of data for API endpoints, such as creating events, managing users, and authentication tokens.
+"""
+
 class EventCreate(BaseModel):
     event_type: str
     details: Optional[str] = None
