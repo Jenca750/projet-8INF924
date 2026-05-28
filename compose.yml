@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: iot_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: iot_doorbell
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  ntfy:
+    image: binwiederhier/ntfy:latest
+    container_name: iot_ntfy
+    command: serve
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - ./ntfy/server.yml:/etc/ntfy/server.yml
+      - ntfy_data:/var/cache/ntfy
+      - ntfy_auth:/var/lib/ntfy
+    ports:
+      - "8080:80" # Exposed to internet/mobile app
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./api
+    container_name: iot_backend
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/iot_doorbell
+      - NTFY_URL=http://ntfy:80
+    volumes:
+      - ./api:/app
+      - /var/run/docker.sock:/var/run/docker.sock # Required to manage ntfy users
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - ntfy
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.dev
+    container_name: iot_frontend
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  ntfy_data:
+  ntfy_auth:
+
+networks:
+  iot_network:
+    driver: bridge

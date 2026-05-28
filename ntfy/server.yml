@@ -1,0 +1,6 @@
+# ntfy server config
+base-url: "http://localhost:8080"
+auth-file: "/var/lib/ntfy/user.db"
+auth-default-access: "deny-all"
+listen-http: ":80"
+enable-login: true
