@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { Bell, Lock, User, Loader2 } from 'lucide-react'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+const API_URL = import.meta.env.VITE_API_URL || '/api'
 
 export default function Login({ setToken }) {
   const [username, setUsername] = useState('')

@@ -7,7 +7,7 @@ import Profile from './components/Profile'
 import Admin from './components/Admin'
 import { Bell, Activity, Users as UsersIcon, LogOut, User as UserIcon } from 'lucide-react'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+const API_URL = import.meta.env.VITE_API_URL || '/api'
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'))

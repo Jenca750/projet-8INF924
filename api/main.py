@@ -56,7 +56,11 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 # Initialize Database
 models.Base.metadata.create_all(bind=database.engine)
 
-app = FastAPI(title="IoT Doorbell API")
+app = FastAPI(
+    title="IoT Doorbell API",
+    description="API of the backend for the IoT Doorbell project. Handles authentication, event logging, and pushing notifications to ntfy.",
+    version="1.0.0"
+)
 
 @app.on_event("startup")
 def init_defaults():
