@@ -44,13 +44,34 @@ export default function Dashboard({ token }) {
           <h1 className="text-3xl font-bold text-white mb-2">Event Logs</h1>
           <p className="text-slate-400">Derniers événements de la sonnette connectée</p>
         </div>
-        <button 
-          onClick={fetchLogs}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-300 transition-colors border border-slate-700"
-        >
-          <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
-          Actualiser
-        </button>
+        <div className="flex gap-3">
+          <button 
+            onClick={async () => {
+              const espToken = window.prompt("Veuillez entrer le token ESP32 :");
+              if (!espToken) return;
+              try {
+                await axios.post(`${API_URL}/events`, { event_type: 'button', details: 'Simulation manuelle' }, {
+                  headers: { Authorization: `Bearer ${espToken}` }
+                });
+                fetchLogs();
+                alert("Évènement simulé avec succès !");
+              } catch (err) {
+                alert("Erreur lors de la simulation : " + (err.response?.data?.detail || err.message));
+              }
+            }}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl text-white transition-colors border border-indigo-500"
+          >
+            <Bell size={18} />
+            Simuler un évènement
+          </button>
+          <button 
+            onClick={fetchLogs}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-300 transition-colors border border-slate-700"
+          >
+            <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
+            Actualiser
+          </button>
+        </div>
       </div>
 
       <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-slate-700/50 overflow-hidden shadow-2xl">
