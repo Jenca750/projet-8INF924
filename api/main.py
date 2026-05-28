@@ -10,16 +10,35 @@ import secrets
 
 load_dotenv()
 
-import models, schemas, database, ntfy_client
+# Environment variables generation
+env_path = os.path.join(os.path.dirname(__file__), ".env")
+env_updates = []
 
-# Environment variables
 ESP32_SECRET_TOKEN = os.getenv("ESP32_SECRET_TOKEN")
 if not ESP32_SECRET_TOKEN:
     ESP32_SECRET_TOKEN = secrets.token_hex(16)
-    env_path = os.path.join(os.path.dirname(__file__), ".env")
+    os.environ["ESP32_SECRET_TOKEN"] = ESP32_SECRET_TOKEN
+    env_updates.append(f"ESP32_SECRET_TOKEN={ESP32_SECRET_TOKEN}")
+    print(f"Generated ESP32_SECRET_TOKEN: {ESP32_SECRET_TOKEN}")
+
+NTFY_SYSTEM_USER = os.getenv("NTFY_SYSTEM_USER", "system_backend")
+os.environ["NTFY_SYSTEM_USER"] = NTFY_SYSTEM_USER
+
+NTFY_SYSTEM_PASS = os.getenv("NTFY_SYSTEM_PASS")
+if not NTFY_SYSTEM_PASS:
+    NTFY_SYSTEM_PASS = secrets.token_hex(16)
+    os.environ["NTFY_SYSTEM_PASS"] = NTFY_SYSTEM_PASS
+    env_updates.append(f"NTFY_SYSTEM_USER={NTFY_SYSTEM_USER}")
+    env_updates.append(f"NTFY_SYSTEM_PASS={NTFY_SYSTEM_PASS}")
+    print(f"Generated NTFY_SYSTEM_PASS: {NTFY_SYSTEM_PASS}")
+
+if env_updates:
     with open(env_path, "a") as f:
-        f.write(f"ESP32_SECRET_TOKEN={ESP32_SECRET_TOKEN}\n")
-    print(f"Generated ESP32_SECRET_TOKEN: {ESP32_SECRET_TOKEN} and saved to {env_path}")
+        for update in env_updates:
+            f.write(f"{update}\n")
+    print(f"Saved new generated tokens to {env_path}")
+
+import models, schemas, database, ntfy_client
 
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-for-jwt")
 ALGORITHM = "HS256"

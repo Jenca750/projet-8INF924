@@ -80,6 +80,8 @@ En tant qu'administrateur, il est possible de se rendre dans l'onglet "Admin" po
 
 Pour faciliter l'utilisation, le mot de passe de l'utilisateur ntfy et de l'application web sont synchronisés, ainsi, on ne passe que par le frontend pour créer des utilisateurs et modifier son mot de passe qui est automatiquement mis à jour du coté de ntfy. Ainsi, l'administration d'utilisateurs côté serveur ntfy est totalement transparente.
 
+*Pour assurer la création de nouveau topic ntfy et la publication de message par le système sur ces topics, un utilisateur ntfy (``NTFY_SYSTEM_USER=system_backend``) est automatiquement créé par le système, ses credentials sont stockés dans le ``.env``.*
+
 ### Notifications - ntfy
 
 Pour utiliser ntfy, il suffit de télécharger l'application sur son téléphone [Get ntfy](https://ntfy.sh).

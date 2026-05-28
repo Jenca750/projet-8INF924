@@ -4,7 +4,7 @@ import docker
 import logging
 
 NTFY_URL = os.getenv("NTFY_URL", "http://ntfy:80")
-NTFY_TOPIC = os.getenv("NTFY_TOPIC", "doorbell_alerts")
+NTFY_TOPIC = os.getenv("NTFY_TOPIC", "doorbell")
 DOCKER_NTFY_CONTAINER = os.getenv("DOCKER_NTFY_CONTAINER", "iot_ntfy")
 
 logger = logging.getLogger(__name__)
@@ -16,8 +16,8 @@ except Exception as e:
     logger.error(f"Failed to initialize docker client: {e}")
     docker_client = None
 
-SYSTEM_USER = "system_backend"
-SYSTEM_PASS = "secret123"
+SYSTEM_USER = os.getenv("NTFY_SYSTEM_USER")
+SYSTEM_PASS = os.getenv("NTFY_SYSTEM_PASS")
 
 _system_user_created = False
 
