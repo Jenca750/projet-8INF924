@@ -2,7 +2,8 @@ from fastapi import FastAPI, Depends, HTTPException, status, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials, OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 import os
 from jose import JWTError, jwt
 from dotenv import load_dotenv
@@ -144,8 +145,13 @@ def receive_event(event: schemas.EventCreate, db: Session = Depends(database.get
     db.refresh(db_event)
     
     # 2. Push to Ntfy
+    ts = db_event.timestamp
+    if ts.tzinfo is None:
+        ts = ts.replace(tzinfo=timezone.utc)
+    local_ts = ts.astimezone(ZoneInfo("America/Montreal"))
+    
     title = "Doorbell Alert!" if event.event_type == 'button' else "Motion Detected"
-    message = f"Event type: {event.event_type} at {db_event.timestamp.strftime('%Y-%m-%d %H:%M:%S')}"
+    message = f"Event type: {event.event_type} at {local_ts.strftime('%Y-%m-%d %H:%M:%S')}"
     tags = ["bell"] if event.event_type == 'button' else ["eyes"]
     ntfy_client.push_notification(title, message, tags)
     
