@@ -35,10 +35,10 @@ export default function Profile({ token, me }) {
   }
 
   return (
-    <div className="p-8 max-w-2xl mx-auto space-y-8">
+    <div className="p-4 md:p-8 max-w-2xl mx-auto space-y-8 pb-8">
       <div className="mb-4">
-        <h1 className="text-3xl font-bold text-white mb-2">Mon Profil</h1>
-        <p className="text-slate-400">Gérez vos informations personnelles</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Mon Profil</h1>
+        <p className="text-sm md:text-base text-slate-400">Gérez vos informations personnelles</p>
       </div>
 
       {message.text && (

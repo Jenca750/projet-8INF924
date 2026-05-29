@@ -78,9 +78,9 @@ export default function Admin({ token, me }) {
   }
 
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-8">
+    <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 pb-8">
       <div className="mb-4">
-        <h1 className="text-3xl font-bold text-white mb-2">Espace Administration</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Espace Administration</h1>
         <p className="text-slate-400">Gérez les accès de la plateforme et les abonnements aux notifications</p>
       </div>
 

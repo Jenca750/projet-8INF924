@@ -38,13 +38,13 @@ export default function Dashboard({ token }) {
   }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+    <div className="p-4 md:p-8 max-w-6xl mx-auto pb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0 mb-6 md:mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Event Logs</h1>
-          <p className="text-slate-400">Derniers événements de la sonnette connectée</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">Event Logs</h1>
+          <p className="text-sm md:text-base text-slate-400">Derniers événements de la sonnette connectée</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-row gap-2 w-full md:w-auto justify-end">
           <button 
             onClick={async () => {
               const espToken = window.prompt("Veuillez entrer le token ESP32 :");
@@ -59,17 +59,18 @@ export default function Dashboard({ token }) {
                 alert("Erreur lors de la simulation : " + (err.response?.data?.detail || err.message));
               }
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl text-white transition-colors border border-indigo-500"
+            className="flex-1 md:flex-none flex justify-center items-center gap-2 px-3 md:px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl text-white transition-colors border border-indigo-500 text-sm md:text-base"
           >
             <Bell size={18} />
-            Simuler un évènement
+            <span className="hidden sm:inline">Simuler un évènement</span>
+            <span className="sm:hidden">Simuler</span>
           </button>
           <button 
             onClick={fetchLogs}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-300 transition-colors border border-slate-700"
+            className="flex items-center justify-center gap-2 px-3 md:px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-300 transition-colors border border-slate-700 text-sm md:text-base"
           >
             <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
-            Actualiser
+            <span className="hidden sm:inline">Actualiser</span>
           </button>
         </div>
       </div>
