@@ -16,8 +16,7 @@ except Exception as e:
     logger.error(f"Failed to initialize docker client: {e}")
     docker_client = None
 
-SYSTEM_USER = os.getenv("NTFY_SYSTEM_USER")
-SYSTEM_PASS = os.getenv("NTFY_SYSTEM_PASS")
+# System credentials will be fetched dynamically from os.getenv to avoid import-order issues
 
 _system_user_created = False
 
@@ -29,9 +28,11 @@ def _ensure_system_user():
     global _system_user_created
     if _system_user_created:
         return
+    system_user = os.getenv("NTFY_SYSTEM_USER")
+    system_pass = os.getenv("NTFY_SYSTEM_PASS")
     success, out = _run_ntfy_cli("user list")
-    if success and SYSTEM_USER not in out:
-        ntfy_add_user(SYSTEM_USER, SYSTEM_PASS, role="admin")
+    if success and system_user and system_user not in out:
+        ntfy_add_user(system_user, system_pass, role="admin")
     _system_user_created = True
 
 # called via API endpoint : /api/events POST
@@ -54,8 +55,10 @@ def push_notification(title: str, message: str, tags: list = None):
     try:
         # Use docker compose service name "ntfy"
         url = f"http://ntfy:80/{NTFY_TOPIC}"
+        system_user = os.getenv("NTFY_SYSTEM_USER")
+        system_pass = os.getenv("NTFY_SYSTEM_PASS")
         with httpx.Client() as client:
-            response = client.post(url, data=message.encode('utf-8'), headers=headers, auth=(SYSTEM_USER, SYSTEM_PASS))
+            response = client.post(url, data=message.encode('utf-8'), headers=headers, auth=(system_user, system_pass))
             response.raise_for_status()
             return True
     except Exception as e:
