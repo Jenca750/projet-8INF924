@@ -103,3 +103,68 @@ Dans l'onglet "Notifications", il faut ensuite s'abonner au topic ``doorbell``.
 On peut ensuite voir les notifications (et les recevoir sous forme de notifications push) dans le channel de message ainsi créé.
 
 <img src="screen/screen7.png" width="200"> <img src="screen/screen6.png" width="200">
+
+## Développement embarqué ESP32
+
+Le développement embarqué a été réalisé avec Arduino IDE sur la carte FireBeetle ESP32-E v1.0.
+
+Une base de firmware modulaire a été mise en place afin de séparer les responsabilités :
+
+- initialisation générale du système
+- gestion du bouton
+- gestion des capteurs
+- gestion du WiFi et des appels API
+
+### Branchements réalisés
+
+#### Câblage général
+
+Pour simplifier le prototypage sur breadboard :
+
+- la broche 3V3 du FireBeetle ESP32 alimente le rail positif de la breadboard
+- une broche GND du FireBeetle alimente le rail de masse
+- chaque module est ensuite relié :
+  - au rail +
+  - au rail GND
+  - à une broche d'entrée/sortie de l'ESP32 pour son signal
+
+#### Breadboard
+
+Le montage est réalisé sur breadboard selon le principe suivant :
+
+- la carte ESP32 est placée de manière à accéder facilement aux broches
+- les rails latéraux servent à distribuer l'alimentation
+- les modules sont branchés un par un pour valider leur fonctionnement avant intégration complète
+
+#### Bouton poussoir DFR0029
+Le bouton poussoir est utilisé en tant que sonette.
+
+Branchement utilisé :
+
+- VCC → alimentation
+- GND → masse
+- OUT / SIG → D6 sur le FireBeetle ESP32-E
+
+Ce capteur permet de générer un évènement de type button.
+
+#### Capteur IR SEN0018
+Le capteur IR est utilisé pour de la détection de présence / mouvement.
+
+Branchement utilisé :
+
+- VCC → alimentation
+- GND → masse
+- OUT / SIG → D5 sur le FireBeetle ESP32-E
+
+Ce capteur permet de générer un évènement de type motion.
+
+#### Capteur de son DFR0034
+Le capteur de son a été envisagé pour détecter un niveau sonore local.
+
+Branchement utilisé :
+
+- VCC → alimentation
+- GND → masse
+- A → entrée analogique A5 sur le FireBeetle ESP32-E pour mesurer le niveau sonore
+
+Ce capteur permet de mesurer le niveau sonore 
