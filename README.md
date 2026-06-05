@@ -168,3 +168,6 @@ Branchement utilisé :
 - A → entrée analogique A5 sur le FireBeetle ESP32-E pour mesurer le niveau sonore
 
 Ce capteur permet de mesurer le niveau sonore 
+
+## PCB
+Pour voir le PCB, il faut copier le dossier dans votre répertoire de projet EasyEDA. Il devrait ensuite apparaître dans le menu de vos projets à gauche. Si, en cliquant sur le PCB, certaines composantes ne s’affichent pas immédiatement, changer la vue des couches permet généralement de les faire apparaître.

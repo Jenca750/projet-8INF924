@@ -1,0 +1,170 @@
+{
+  "uuid": "94031fbeb2163e7008d4b3978a14fa9e",
+  "path": "Offline/ESP32",
+  "name": "ESP32",
+  "content": "",
+  "created_at": "2026-06-04 17:51:12",
+  "updated_at": "2026-06-04 20:00:22",
+  "stick": "",
+  "documents": [
+    {
+      "uuid": "51e4ef443d0a777a0ba657dd2e78a6ba",
+      "title": "Diag_PCB_ESP32",
+      "description": "",
+      "docType": "1",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "746d6fd58f3445fabdc0960422c9b2d2": 1,
+        "70313016c81947afba5a980c5e759f73": 1,
+        "ff30d7d4e8bc41589b9cbe9c644bd867": 1,
+        "a77ab0a9bbc644adb03eadbe7e559bce": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "MODUL - MAX9814 (DFR0034 Placeholder)",
+          1,
+          "MODUL - MAX9814",
+          "MAX1",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "TTP223B (DFR0029 Placeholder)",
+          1,
+          "TTP223B CAPACITIVE DIGITAL TOUCH SENSOR TOUCH BUTTON MODULE",
+          "U1",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "HC-SR505 OUT GND VCC (LCSC equivalent for SEN0018 )",
+          1,
+          "HC-SR505",
+          "U2",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "Firebeetle_ESP32_E",
+          1,
+          "FIREBEETLE_ESP32_E_FOOTPRINT",
+          "U3",
+          {
+            "Manufacturer Part": "DFR0654",
+            "Manufacturer": "DFRobot",
+            "Supplier": "DFRobot",
+            "Supplier Part": "DFR0654"
+          }
+        ]
+      ],
+      "updateTime": 1780616968,
+      "createTime": 1780609873,
+      "histories": [],
+      "created_at": "2026-06-04 17:51:13",
+      "updated_at": "2026-06-04 19:49:28"
+    },
+    {
+      "uuid": "baf6ce9ff073497856ac9e6361f68b8f",
+      "puuid": "94031fbeb2163e7008d4b3978a14fa9e",
+      "title": "PCB_ESP32",
+      "filename": "PCB_ESP32.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "da27c1359b92440498593c214276f87a": 1,
+        "4c24af372a6c4c5da1e90210e21ca313": 1,
+        "0cbbc1f575774e34a79e89fc360105f1": 1,
+        "2adbaf0f93004b1784cf9dc10306fe00": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "MODUL - MAX9814 (DFR0034 Placeholder)",
+          1,
+          "MODUL - MAX9814",
+          "MAX1",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "TTP223B (DFR0029 Placeholder)",
+          1,
+          "TTP223B CAPACITIVE DIGITAL TOUCH SENSOR TOUCH BUTTON MODULE",
+          "U1",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "HC-SR505 OUT GND VCC (LCSC equivalent for SEN0018 )",
+          1,
+          "HC-SR505",
+          "U2",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "Firebeetle_ESP32_E",
+          1,
+          "FIREBEETLE_ESP32_E_FOOTPRINT",
+          "U3",
+          {
+            "Manufacturer Part": "DFR0654",
+            "Manufacturer": "DFRobot",
+            "Supplier": "DFRobot",
+            "Supplier Part": "DFR0654"
+          }
+        ]
+      ],
+      "updateTime": 1780617622,
+      "createTime": 1780616875,
+      "histories": [],
+      "created_at": "2026-06-04 19:47:55",
+      "updated_at": "2026-06-04 20:00:22"
+    }
+  ],
+  "sort": [],
+  "title": "ESP32",
+  "foldername": "ESP32",
+  "schfilename": "ESP32.json",
+  "schfilemtime": 1780616968537
+}
