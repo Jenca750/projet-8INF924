@@ -2,7 +2,9 @@
 #include "wifi_api.h"
 #include "button.h"
 #include "sensor_ir.h"
+#include "sensor_us.h"
 #include "sensor_sound.h"
+#include "speaker.h"
 
 void setup() {
   Serial.begin(115200);
@@ -13,12 +15,14 @@ void setup() {
   setupButton();
   setupIR();
   setupSound();
+  setupUS();
+  setupSpeaker();
 
-  //connectWiFi();
+  //connectWiFi();  
 }
 
 void loop() {
   handleButton();
-  handleIR();
+  handleUS();
   handleSound();
 }

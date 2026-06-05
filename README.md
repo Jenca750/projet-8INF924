@@ -115,6 +115,27 @@ Une base de firmware modulaire a été mise en place afin de séparer les respon
 - gestion des capteurs
 - gestion du WiFi et des appels API
 
+Matériel utilisé: 
+- DFR0034 - Sound sensor
+- SEN0307 - Ultrasonic sensor
+- SEN0018 - IR sensor
+- FIT0449 - Speaker
+- DFR0030 - Capacitive touch sensor
+- DFR0029 – Push button
+- ESP32 FireBeetle ESP32-E v1.0
+
+### Mise en place de l'environnement
+
+Tout d'abord, il est necessaire d'installer l'IDE Arduino et d'ouvrir `Smartdoorbell/Smartdoorbell.ino` avec cet IDE.
+
+pour la comptabilité avec l'ESP32, installer le board manager `esp32`
+
+Brancher la board et Sélectionner `FireBeetle 2 ESP32-E`
+
+Si la board n'est pas détecté par Arduino IDE, il peut être necessaire d'installer le pilote suivant: [CH340](https://wiki.dfrobot.com/dfr1140/docs/21026)
+
+installer la librairie `ArduinoJson` pour le traitement des requêtes API
+
 ### Branchements réalisés
 
 #### Câblage général

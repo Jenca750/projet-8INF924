@@ -3,6 +3,7 @@
 #include "config.h"
 #include "button.h"
 #include "wifi_api.h"
+#include "speaker.h"
 
 bool lastButtonState = LOW;
 unsigned long lastButtonTime = 0;
@@ -26,6 +27,7 @@ void handleButton() {
     if (now - lastButtonTime > debounceDelay) {
       Serial.println("Bouton appuyé -> envoi événement button");
       //sendEvent("button");
+      playDoorbellSound();
       lastButtonTime = now;
     }
   }
