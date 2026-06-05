@@ -11,11 +11,8 @@ void setupSound() {
 void handleSound() {
   int value = analogRead(SOUND_PIN);
 
-  Serial.print("Son : ");
-  Serial.println(value);
-
   if (value > SOUND_THRESHOLD) {
-    Serial.println("!!! SON FORT DÉTECTÉ !!!");
+    //Serial.println("!!! SON FORT DÉTECTÉ !!!");
     //sendEvent("sound");
     delay(500);
   }

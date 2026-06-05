@@ -11,8 +11,12 @@
 
 // Pins FireBeetle ESP32-E
 #define BUTTON_PIN D6
-#define IR_PIN D5
+#define IR_PIN D10
+#define SPEAKER_PIN D5
+#define US_PIN A3
 #define SOUND_PIN A2
+
 #define SOUND_THRESHOLD 500
+#define SONIC_THRESHOLD 500
 
 #endif  
