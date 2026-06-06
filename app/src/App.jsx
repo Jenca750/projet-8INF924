@@ -119,7 +119,7 @@ function App() {
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -z-10 mix-blend-screen pointer-events-none"></div>
           
           <Routes>
-            <Route path="/" element={<Dashboard token={token} />} />
+            <Route path="/" element={<Dashboard token={token} me={me} />} />
             <Route path="/profile" element={<Profile token={token} me={me} />} />
             <Route path="/admin" element={<Admin token={token} me={me} />} />
             <Route path="*" element={<Navigate to="/" />} />

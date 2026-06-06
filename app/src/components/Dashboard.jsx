@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Activity, Bell, MapPin, Clock, Loader2, RefreshCw } from 'lucide-react'
+import { Activity, Bell, MapPin, Clock, Loader2, RefreshCw, Trash2 } from 'lucide-react'
 
 const API_URL = import.meta.env.VITE_API_URL || '/api'
 
-export default function Dashboard({ token }) {
+export default function Dashboard({ token, me }) {
   const [logs, setLogs] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -35,6 +35,18 @@ export default function Dashboard({ token }) {
       day: '2-digit', month: 'short', year: 'numeric',
       hour: '2-digit', minute: '2-digit', second: '2-digit'
     })
+  }
+
+  const clearLogs = async () => {
+    if (!window.confirm("Êtes-vous sûr de vouloir effacer tout l'historique ?")) return;
+    try {
+      await axios.delete(`${API_URL}/logs`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchLogs();
+    } catch (err) {
+      alert("Erreur lors de la suppression de l'historique : " + (err.response?.data?.detail || err.message));
+    }
   }
 
   return (
@@ -72,6 +84,16 @@ export default function Dashboard({ token }) {
             <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
             <span className="hidden sm:inline">Actualiser</span>
           </button>
+          {me?.is_admin && (
+            <button 
+              onClick={clearLogs}
+              className="flex items-center justify-center gap-2 px-3 md:px-4 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-500 rounded-xl transition-colors border border-red-500/30 text-sm md:text-base"
+              title="Effacer l'historique"
+            >
+              <Trash2 size={18} />
+              <span className="hidden sm:inline">Effacer</span>
+            </button>
+          )}
         </div>
       </div>
 

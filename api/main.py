@@ -247,6 +247,22 @@ def get_logs(skip: int = 0, limit: int = 100, db: Session = Depends(database.get
     logs = db.query(models.EventLog).order_by(models.EventLog.timestamp.desc()).offset(skip).limit(limit).all()
     return logs
 
+@app.delete("/api/logs")
+def clear_logs(db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
+    """
+    Clear all event logs. Only accessible to admin users.
+    args:
+    - db [Session]: the database session for querying event logs
+    - current_user [models.User]: the currently authenticated user, obtained from the JWT token
+    """
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Only admins can clear logs")
+    
+    db.query(models.EventLog).delete()
+    db.commit()
+    return {"status": "success", "message": "All logs cleared"}
+
+
 @app.get("/api/users", response_model=list[schemas.User])
 def list_users(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
     """
