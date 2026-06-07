@@ -78,6 +78,8 @@ Une fois connecté au frontend, il est possible de voir l'historique des évène
 
 Il est possible d'accéder à l'onglet "Profile" pour modifier son propre mot de passe.
 
+Le bouton "Effacer" permet tout simplement d'éffacer l'historique d'évènements de la page d'accueil.
+
 <img src="screen/screen3.png" width="800">
 
 En tant qu'administrateur, il est possible de se rendre dans l'onglet "Admin" pour ajouter ou supprimer de nouveaux utilisateurs.
@@ -87,6 +89,14 @@ En tant qu'administrateur, il est possible de se rendre dans l'onglet "Admin" po
 Pour faciliter l'utilisation, le mot de passe de l'utilisateur ntfy et de l'application web sont synchronisés, ainsi, on ne passe que par le frontend pour créer des utilisateurs et modifier son mot de passe qui est automatiquement mis à jour du coté de ntfy. Ainsi, l'administration d'utilisateurs côté serveur ntfy est totalement transparente.
 
 *Pour assurer la création de nouveau topic ntfy et la publication de message par le système sur ces topics, un utilisateur ntfy (``NTFY_SYSTEM_USER=system_backend``) est automatiquement créé par le système, ses credentials sont stockés dans le ``.env``.*
+
+Ensuite, on a la possibilité dans la page admin de pouvoir définir un son comme sonnette via une requête POST.
+
+Ce son pourra être joué sur l'ESP32 après avoir appuyer sur le bouton par exemple via la requête suivante 
+
+```bash
+curl -H "Authorization: Bearer <TOKEN>" http://localhost:8000/api/sound --output sonnette.mp3
+```
 
 ### Notifications - ntfy
 

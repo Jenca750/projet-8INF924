@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Users as UsersIcon, Plus, Loader2, CheckCircle2, AlertCircle, Trash2, User } from 'lucide-react'
+import SoundManager from './SoundManager'
 
 const API_URL = import.meta.env.VITE_API_URL || '/api'
 
@@ -166,6 +167,9 @@ export default function Admin({ token, me }) {
             </button>
           </form>
         </div>
+
+        {/* Sound Manager Card */}
+        <SoundManager token={token} showMessage={showMessage} />
       </div>
     </div>
   )

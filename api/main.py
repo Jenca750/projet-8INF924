@@ -2,9 +2,10 @@ import os
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-from fastapi import FastAPI, Depends, HTTPException, status, Security
+from fastapi import FastAPI, Depends, HTTPException, status, Security, UploadFile, File
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials, OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 from sqlalchemy.orm import Session
 
@@ -368,3 +369,30 @@ def read_users_me(current_user: models.User = Depends(get_current_user)):
     - current_user [models.User]: the currently authenticated user, obtained from the JWT token
     """
     return current_user
+
+@app.post("/api/sound")
+async def upload_sound(file: UploadFile = File(...), current_user: models.User = Depends(get_current_user)):
+    """
+    Upload a custom sound file for the doorbell.
+    args:
+    - file [UploadFile]: the audio file to save
+    - current_user [models.User]: the currently authenticated user, must be admin
+    """
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Only admins can change the custom sound")
+        
+    file_location = os.path.join(os.path.dirname(__file__), "custom_sound.mp3")
+    with open(file_location, "wb+") as file_object:
+        file_object.write(await file.read())
+        
+    return {"status": "success", "message": "Sound uploaded successfully"}
+
+@app.get("/api/sound")
+def get_sound(authorized: bool = Depends(verify_esp32_token)):
+    """
+    Get the custom sound file. This endpoint requires the ESP32 secret token.
+    """
+    file_location = os.path.join(os.path.dirname(__file__), "custom_sound.mp3")
+    if not os.path.exists(file_location):
+        raise HTTPException(status_code=404, detail="Custom sound not found")
+    return FileResponse(file_location, media_type="audio/mpeg", filename="custom_sound.mp3")
