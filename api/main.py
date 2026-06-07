@@ -371,7 +371,7 @@ def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
 
 @app.post("/api/sound")
-async def upload_sound(file: UploadFile = File(...), current_user: models.User = Depends(get_current_user)):
+async def upload_sound(file: UploadFile = File(None), current_user: models.User = Depends(get_current_user)):
     """
     Upload a custom sound file for the doorbell.
     args:
@@ -381,9 +381,16 @@ async def upload_sound(file: UploadFile = File(...), current_user: models.User =
     if not current_user.is_admin:
         raise HTTPException(status_code=403, detail="Only admins can change the custom sound")
         
+    if not file or not file.filename:
+        raise HTTPException(status_code=400, detail="No sound file provided")
+
+    file_content = await file.read()
+    if not file_content:
+        raise HTTPException(status_code=400, detail="Provided sound file is empty")
+
     file_location = os.path.join(os.path.dirname(__file__), "custom_sound.mp3")
     with open(file_location, "wb+") as file_object:
-        file_object.write(await file.read())
+        file_object.write(file_content)
         
     return {"status": "success", "message": "Sound uploaded successfully"}
 
@@ -393,6 +400,6 @@ def get_sound(authorized: bool = Depends(verify_esp32_token)):
     Get the custom sound file. This endpoint requires the ESP32 secret token.
     """
     file_location = os.path.join(os.path.dirname(__file__), "custom_sound.mp3")
-    if not os.path.exists(file_location):
+    if not os.path.exists(file_location) or os.path.getsize(file_location) == 0:
         raise HTTPException(status_code=404, detail="Custom sound not found")
     return FileResponse(file_location, media_type="audio/mpeg", filename="custom_sound.mp3")
