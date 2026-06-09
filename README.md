@@ -21,6 +21,8 @@ Afin de sécuriser les connexions, les échanges entre les conteneurs se font vi
 
 Ainsi, les seules connexions qui se font sur le réseau WiFi sont entre le backend et l'ESP32 pour envoyer via une requête POST au déclenchement d'un évènement (mouvement capteur IR ou pression bouton), entre le backend et le navigateur de l'utilisateur qui veut consulter le frontend (authentification username/password), entre le serveur ntfy et l'application mobile ntfy sur le téléphone de l'utilisateur. 
 
+<img src="screen/schema.png" width="800">
+
 ### Quickstart Docker
 
 Tout d'abord, il faut configurer les identifiants de la base de données Postgres, pour ce faire, copier le fichier à la racine ``.env.example`` en ``.env`` et changer le mot de passe de la base de données.
@@ -117,6 +119,8 @@ On peut ensuite voir les notifications (et les recevoir sous forme de notificati
 ## Développement embarqué ESP32
 
 Le développement embarqué a été réalisé avec Arduino IDE sur la carte FireBeetle ESP32-E v1.0.
+
+Le code est disponible dans ``./Smartdoorbell``
 
 Une base de firmware modulaire a été mise en place afin de séparer les responsabilités :
 
