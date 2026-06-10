@@ -129,6 +129,27 @@ Une base de firmware modulaire a été mise en place afin de séparer les respon
 - gestion des capteurs
 - gestion du WiFi et des appels API
 
+Matériel utilisé: 
+- DFR0034 - Sound sensor
+- SEN0307 - Ultrasonic sensor
+- SEN0018 - IR sensor
+- FIT0449 - Speaker
+- DFR0030 - Capacitive touch sensor
+- DFR0029 – Push button
+- ESP32 FireBeetle ESP32-E v1.0
+
+### Mise en place de l'environnement
+
+Tout d'abord, il est necessaire d'installer l'IDE Arduino et d'ouvrir `Smartdoorbell/Smartdoorbell.ino` avec cet IDE.
+
+pour la comptabilité avec l'ESP32, installer le board manager `esp32`
+
+Brancher la board et Sélectionner `FireBeetle 2 ESP32-E`
+
+Si la board n'est pas détecté par Arduino IDE, il peut être necessaire d'installer le pilote suivant: [CH340](https://wiki.dfrobot.com/dfr1140/docs/21026)
+
+installer la librairie `ArduinoJson` pour le traitement des requêtes API
+
 ### Branchements réalisés
 
 #### Câblage général
@@ -157,18 +178,18 @@ Branchement utilisé :
 
 - VCC → alimentation
 - GND → masse
-- OUT / SIG → D6 sur le FireBeetle ESP32-E
+- OUT → D6 sur le FireBeetle ESP32-E
 
 Ce capteur permet de générer un évènement de type button.
 
-#### Capteur IR SEN0018
-Le capteur IR est utilisé pour de la détection de présence / mouvement.
+#### Capteur Ultrasonic sensor SEN0307 
+Le capteur Ultrasonic est utilisé pour de la détection de présence / mouvement.
 
 Branchement utilisé :
 
 - VCC → alimentation
 - GND → masse
-- OUT / SIG → D5 sur le FireBeetle ESP32-E
+- A → entrée analogique A3 sur le FireBeetle ESP32-E pour mesurer le niveau de mouvement
 
 Ce capteur permet de générer un évènement de type motion.
 
@@ -179,9 +200,20 @@ Branchement utilisé :
 
 - VCC → alimentation
 - GND → masse
-- A → entrée analogique A5 sur le FireBeetle ESP32-E pour mesurer le niveau sonore
+- A → entrée analogique A2 sur le FireBeetle ESP32-E pour mesurer le niveau sonore
 
 Ce capteur permet de mesurer le niveau sonore 
+
+#### Speaker FIT0449
+Ce speaker a été utilisé pour emettre un audio enregistré au préalable via l'interface web.
+
+Branchement utilisé :
+
+- VCC → alimentation
+- GND → masse
+- D → D2 sur le FireBeetle ESP32-E pour permettre l'utilisation de DAC
+
+Cet effecteur permet d'émettre du son
 
 ## PCB
 Pour voir le PCB, il faut copier le dossier dans votre répertoire de projet EasyEDA. Il devrait ensuite apparaître dans le menu de vos projets à gauche. Si, en cliquant sur le PCB, certaines composantes ne s’affichent pas immédiatement, changer la vue des couches permet généralement de les faire apparaître.

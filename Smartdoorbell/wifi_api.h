@@ -3,5 +3,6 @@
 
 void connectWiFi();
 void sendEvent(const char* eventType);
+void streamAudio(const char* url);
 
 #endif

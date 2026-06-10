@@ -72,3 +72,71 @@ void sendEvent(const char* eventType) {
 
   http.end();
 }
+
+void streamAudio(const char* url) {
+  if (WiFi.status() != WL_CONNECTED) {
+    connectWiFi();
+    if (WiFi.status() != WL_CONNECTED) {
+      Serial.println("WiFi non connecté.");
+      return;
+    }
+  }
+
+  HTTPClient http;
+  http.begin(url);
+  http.addHeader("Authorization", String("Bearer ") + API_TOKEN);
+
+  int httpCode = http.GET();
+
+  if (httpCode != 200) {
+    Serial.print("Erreur HTTP audio : ");
+    Serial.println(httpCode);
+    http.end();
+    return;
+  }
+
+  int totalLen = http.getSize();
+  Serial.print("Taille audio : ");
+  Serial.println(totalLen);
+
+  WiFiClient* stream = http.getStreamPtr();
+
+  // Skip WAV header (44 bytes)
+  uint8_t header[44];
+  stream->readBytes(header, 44);
+  int remaining = totalLen - 44;
+
+  Serial.println("Lecture en streaming...");
+
+  uint8_t buf[1024];
+
+  while (remaining > 0) {
+    int toRead = min((int)sizeof(buf), remaining);
+    int bytesRead = stream->readBytes(buf, toRead);
+
+    if (bytesRead <= 0) break;
+
+    float gain = 4.0; // Augmente le son par 4. Ajuste entre 1.0 et 10.0
+
+    for (int i = 44; i + 1 < bytesRead; i += 2) {
+        int16_t sample = (int16_t)(buf[i] | (buf[i + 1] << 8));
+        
+        // Gain numérique
+        int32_t amplified = (int32_t)(sample * gain);
+        
+        // Clipping (pour éviter de dépasser les limites)
+        if (amplified > 32767) amplified = 32767;
+        if (amplified < -32768) amplified = -32768;
+
+        uint8_t dacVal = (uint8_t)((amplified + 32768) >> 8);
+        dacWrite(SPEAKER_PIN, dacVal);
+        delayMicroseconds(125);
+    }
+
+    remaining -= bytesRead;
+  }
+
+  dacWrite(SPEAKER_PIN, 128); // silence
+  http.end();
+  Serial.println("Lecture terminée. i");
+}
