@@ -26,7 +26,7 @@ void handleButton() {
 
     if (now - lastButtonTime > debounceDelay) {
       Serial.println("Bouton appuyé -> envoi événement button");
-      //sendEvent("button");
+      sendEvent("button");
       playDoorbellSound();
       lastButtonTime = now;
     }

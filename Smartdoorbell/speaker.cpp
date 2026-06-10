@@ -1,8 +1,7 @@
-#include <LittleFS.h>
-
 #include <Arduino.h>
 #include "speaker.h"
 #include "config.h"
+#include "wifi_api.h"
 
 void setupSpeaker() {
   pinMode(SPEAKER_PIN, OUTPUT);
@@ -11,17 +10,8 @@ void setupSpeaker() {
 }
 
 void playDoorbellSound() {
-  tone(SPEAKER_PIN, 784);
-  delay(180);
+  tone(SPEAKER_PIN, 1000);
+  delay(100);
   noTone(SPEAKER_PIN);
-  delay(80);
-
-  tone(SPEAKER_PIN, 988);
-  delay(180);
-  noTone(SPEAKER_PIN);
-  delay(80);
-
-  tone(SPEAKER_PIN, 1175);
-  delay(300);
-  noTone(SPEAKER_PIN);
+  streamAudio(AUDIO_URL);
 }

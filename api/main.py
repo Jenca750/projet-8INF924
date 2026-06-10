@@ -1,21 +1,27 @@
 import os
+import secrets
+import subprocess
+import tempfile
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-from fastapi import FastAPI, Depends, HTTPException, status, Security, UploadFile, File
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials, OAuth2PasswordBearer, OAuth2PasswordRequestForm
+import bcrypt
+import database
+import models
+import ntfy_client
+import schemas
+from dotenv import load_dotenv
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-
-from sqlalchemy.orm import Session
-
+from fastapi.security import (
+    HTTPAuthorizationCredentials,
+    HTTPBearer,
+    OAuth2PasswordBearer,
+    OAuth2PasswordRequestForm,
+)
 from jose import JWTError, jwt
-from dotenv import load_dotenv
-import secrets
-import bcrypt
-
-import models, schemas, database, ntfy_client
-
+from sqlalchemy.orm import Session
 
 load_dotenv()
 
@@ -60,8 +66,9 @@ models.Base.metadata.create_all(bind=database.engine)
 app = FastAPI(
     title="IoT Doorbell API",
     description="API of the backend for the IoT Doorbell project. Handles authentication, event logging, and pushing notifications to ntfy.",
-    version="1.0.0"
+    version="1.0.0",
 )
+
 
 @app.on_event("startup")
 def init_defaults():
@@ -69,11 +76,13 @@ def init_defaults():
     try:
         if db.query(models.User).count() == 0:
             hashed = get_password_hash("admin")
-            admin_user = models.User(username="admin", hashed_password=hashed, is_admin=True)
+            admin_user = models.User(
+                username="admin", hashed_password=hashed, is_admin=True
+            )
             db.add(admin_user)
             db.commit()
             print("Default admin user 'admin' created with password 'admin'")
-            
+
             try:
                 ntfy_client.ntfy_add_user("admin", "admin", role="admin")
             except Exception as e:
@@ -83,10 +92,11 @@ def init_defaults():
     finally:
         db.close()
 
+
 # CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this
+    allow_origins=["*"],  # In production, restrict this
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -94,10 +104,13 @@ app.add_middleware(
 
 # Security schemes
 esp32_auth_scheme = HTTPBearer()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login") # used by frontend to get JWT token
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="api/auth/login"
+)  # used by frontend to get JWT token
 
 
 # --- Helper functions ---
+
 
 def verify_password(plain_password, hashed_password):
     """
@@ -108,6 +121,7 @@ def verify_password(plain_password, hashed_password):
     """
     return bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
 
+
 def get_password_hash(password):
     """
     Hash a plaintext password using bcrypt
@@ -115,6 +129,7 @@ def get_password_hash(password):
     - password [str]: the plaintext password to hash
     """
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     """
@@ -133,7 +148,10 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(database.get_db)):
+
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(database.get_db)
+):
     """
     Decode the JWT token to get the current user. Raises HTTP 401 if token is invalid or user doesn't exist.
     args:
@@ -158,7 +176,10 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise credentials_exception
     return user
 
-def verify_esp32_token(credentials: HTTPAuthorizationCredentials = Depends(esp32_auth_scheme)):
+
+def verify_esp32_token(
+    credentials: HTTPAuthorizationCredentials = Depends(esp32_auth_scheme),
+):
     """
     Verify the token sent by the ESP32 in the Authorization header. Raises HTTP 401 if token is invalid.
     args:
@@ -171,6 +192,7 @@ def verify_esp32_token(credentials: HTTPAuthorizationCredentials = Depends(esp32
         )
     return True
 
+
 # --- API Routes ---
 @app.get("/")
 def read_root():
@@ -179,9 +201,14 @@ def read_root():
     """
     return {"message": "IoT Doorbell Backend is running"}
 
+
 # --- ESP32 Route ---
 @app.post("/api/events", status_code=status.HTTP_201_CREATED)
-def receive_event(event: schemas.EventCreate, db: Session = Depends(database.get_db), authorized: bool = Depends(verify_esp32_token)):
+def receive_event(
+    event: schemas.EventCreate,
+    db: Session = Depends(database.get_db),
+    authorized: bool = Depends(verify_esp32_token),
+):
     """
     Endpoint for ESP32 to send events (doorbell press, motion detected). Logs the event to the database and pushes a notification to ntfy.
     args:
@@ -189,31 +216,39 @@ def receive_event(event: schemas.EventCreate, db: Session = Depends(database.get
     - db [Session]: the database session for logging the event
     - authorized [bool]: the authorization status for the ESP32 token
     """
-    
+
     # 1. Log to database
     db_event = models.EventLog(**event.model_dump())
     db.add(db_event)
     db.commit()
     db.refresh(db_event)
-    
+
     # 2. Push to Ntfy
     ts = db_event.timestamp
     if ts.tzinfo is None:
         ts = ts.replace(tzinfo=timezone.utc)
     local_ts = ts.astimezone(ZoneInfo("America/Montreal"))
-    
+
     # create a notification title and message based on the event type
-    assert event.event_type in ['button', 'motion'], "Invalid event type"
-    title = "Doorbell Alert!" if event.event_type == 'button' else "Motion Detected"
-    message = f"Event type: {event.event_type} at {local_ts.strftime('%Y-%m-%d %H:%M:%S')}"
-    tags = ["bell"] if event.event_type == 'button' else ["eyes"] # tag to display emoji icon in ntfy
+    assert event.event_type in ["button", "motion"], "Invalid event type"
+    title = "Doorbell Alert!" if event.event_type == "button" else "Motion Detected"
+    message = (
+        f"Event type: {event.event_type} at {local_ts.strftime('%Y-%m-%d %H:%M:%S')}"
+    )
+    tags = (
+        ["bell"] if event.event_type == "button" else ["eyes"]
+    )  # tag to display emoji icon in ntfy
     ntfy_client.push_notification(title, message, tags)
-    
+
     return {"status": "success", "event_id": db_event.id}
+
 
 # --- Auth Routes ---
 @app.post("/api/auth/login", response_model=schemas.Token)
-def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
+def login_for_access_token(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(database.get_db),
+):
     """
     Authenticate a user and return an access token.
     args:
@@ -221,7 +256,9 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     - db [Session]: the database session for querying users
     """
 
-    user = db.query(models.User).filter(models.User.username == form_data.username).first()
+    user = (
+        db.query(models.User).filter(models.User.username == form_data.username).first()
+    )
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -234,9 +271,15 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
+
 # --- Frontend Routes (Protected) ---
 @app.get("/api/logs", response_model=list[schemas.EventLog])
-def get_logs(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
+def get_logs(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     """
     Get a list of event logs, protected by JWT authentication. Only accessible to authenticated users.
     args:
@@ -244,12 +287,22 @@ def get_logs(skip: int = 0, limit: int = 100, db: Session = Depends(database.get
     - limit [int]: the maximum number of records to return
     - db [Session]: the database session for querying event logs
     - current_user [models.User]: the currently authenticated user, obtained from the JWT token"""
-    
-    logs = db.query(models.EventLog).order_by(models.EventLog.timestamp.desc()).offset(skip).limit(limit).all()
+
+    logs = (
+        db.query(models.EventLog)
+        .order_by(models.EventLog.timestamp.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
     return logs
 
+
 @app.delete("/api/logs")
-def clear_logs(db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
+def clear_logs(
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     """
     Clear all event logs. Only accessible to admin users.
     args:
@@ -258,14 +311,19 @@ def clear_logs(db: Session = Depends(database.get_db), current_user: models.User
     """
     if not current_user.is_admin:
         raise HTTPException(status_code=403, detail="Only admins can clear logs")
-    
+
     db.query(models.EventLog).delete()
     db.commit()
     return {"status": "success", "message": "All logs cleared"}
 
 
 @app.get("/api/users", response_model=list[schemas.User])
-def list_users(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
+def list_users(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     """
     List all users, protected by JWT authentication. Only accessible to admin users.
     args:
@@ -274,14 +332,19 @@ def list_users(skip: int = 0, limit: int = 100, db: Session = Depends(database.g
     - db [Session]: the database session for querying users
     - current_user [models.User]: the currently authenticated user, obtained from the JWT token
     """
-    
+
     if not current_user.is_admin:
         raise HTTPException(status_code=403, detail="Only admins can list users")
     users = db.query(models.User).offset(skip).limit(limit).all()
     return users
 
+
 @app.post("/api/users", response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
+def create_user(
+    user: schemas.UserCreate,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     """
     Create a new user, protected by JWT authentication. Only accessible to admin users. Also creates the user in ntfy with the same password.
     args:
@@ -289,30 +352,39 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)
     - db [Session]: the database session for creating the user
     - current_user [models.User]: the currently authenticated user, obtained from the JWT token
     """
-    
+
     if not current_user.is_admin:
         raise HTTPException(status_code=403, detail="Only admins can create users")
-    
-    db_user = db.query(models.User).filter(models.User.username == user.username).first()
+
+    db_user = (
+        db.query(models.User).filter(models.User.username == user.username).first()
+    )
     if db_user:
         raise HTTPException(status_code=400, detail="Username already registered")
-    
+
     # Create in DB
     hashed_password = get_password_hash(user.password)
-    new_user = models.User(username=user.username, hashed_password=hashed_password, is_admin=False)
+    new_user = models.User(
+        username=user.username, hashed_password=hashed_password, is_admin=False
+    )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    
+
     # Create in Ntfy (role="user")
     success = ntfy_client.ntfy_add_user(user.username, user.password, role="user")
     if not success:
         pass
-        
+
     return new_user
 
+
 @app.delete("/api/users/{user_id}")
-def delete_user(user_id: int, db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
+def delete_user(
+    user_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     """
     Delete a user, protected by JWT authentication. Only accessible to admin users.
     args:
@@ -320,25 +392,33 @@ def delete_user(user_id: int, db: Session = Depends(database.get_db), current_us
     - db [Session]: the database session for querying users
     - current_user [models.User]: the currently authenticated user, obtained from the JWT token
     """
-    
+
     if not current_user.is_admin:
         raise HTTPException(status_code=403, detail="Only admins can delete users")
-        
+
     user_to_delete = db.query(models.User).filter(models.User.id == user_id).first()
     if not user_to_delete:
         raise HTTPException(status_code=404, detail="User not found")
-        
+
     if user_to_delete.id == current_user.id:
-        raise HTTPException(status_code=400, detail="Cannot delete your own admin account")
-        
+        raise HTTPException(
+            status_code=400, detail="Cannot delete your own admin account"
+        )
+
     db.delete(user_to_delete)
     db.commit()
-    
+
     ntfy_client.ntfy_delete_user(user_to_delete.username)
     return {"status": "success"}
 
+
 @app.put("/api/users/{user_id}/password")
-def update_password(user_id: int, user_update: schemas.UserUpdate, db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
+def update_password(
+    user_id: int,
+    user_update: schemas.UserUpdate,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     """
     Update a user's password, protected by JWT authentication. Only accessible to the user themselves or admin users.
     args:
@@ -350,16 +430,19 @@ def update_password(user_id: int, user_update: schemas.UserUpdate, db: Session =
 
     # Allow user to change their own password, or admin (omitted for simplicity, assume current_user == user_id)
     if current_user.id != user_id:
-        raise HTTPException(status_code=403, detail="Not authorized to change this user's password")
-        
+        raise HTTPException(
+            status_code=403, detail="Not authorized to change this user's password"
+        )
+
     hashed_password = get_password_hash(user_update.password)
     current_user.hashed_password = hashed_password
     db.commit()
-    
+
     # Update in Ntfy
     ntfy_client.ntfy_change_password(current_user.username, user_update.password)
-    
+
     return {"status": "password updated"}
+
 
 @app.get("/api/users/me", response_model=schemas.User)
 def read_users_me(current_user: models.User = Depends(get_current_user)):
@@ -370,8 +453,11 @@ def read_users_me(current_user: models.User = Depends(get_current_user)):
     """
     return current_user
 
+
 @app.post("/api/sound")
-async def upload_sound(file: UploadFile = File(None), current_user: models.User = Depends(get_current_user)):
+async def upload_sound(
+    file: UploadFile = File(None), current_user: models.User = Depends(get_current_user)
+):
     """
     Upload a custom sound file for the doorbell.
     args:
@@ -379,8 +465,10 @@ async def upload_sound(file: UploadFile = File(None), current_user: models.User 
     - current_user [models.User]: the currently authenticated user, must be admin
     """
     if not current_user.is_admin:
-        raise HTTPException(status_code=403, detail="Only admins can change the custom sound")
-        
+        raise HTTPException(
+            status_code=403, detail="Only admins can change the custom sound"
+        )
+
     if not file or not file.filename:
         raise HTTPException(status_code=400, detail="No sound file provided")
 
@@ -391,15 +479,41 @@ async def upload_sound(file: UploadFile = File(None), current_user: models.User 
     file_location = os.path.join(os.path.dirname(__file__), "custom_sound.mp3")
     with open(file_location, "wb+") as file_object:
         file_object.write(file_content)
-        
+
     return {"status": "success", "message": "Sound uploaded successfully"}
+
 
 @app.get("/api/sound")
 def get_sound(authorized: bool = Depends(verify_esp32_token)):
-    """
-    Get the custom sound file. This endpoint requires the ESP32 secret token.
-    """
     file_location = os.path.join(os.path.dirname(__file__), "custom_sound.mp3")
+
     if not os.path.exists(file_location) or os.path.getsize(file_location) == 0:
         raise HTTPException(status_code=404, detail="Custom sound not found")
-    return FileResponse(file_location, media_type="audio/mpeg", filename="custom_sound.mp3")
+
+    # Convertir MP3 → WAV (mono, 8000Hz, 16 bits PCM)
+    tmp_wav = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+    tmp_wav.close()
+
+    result = subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-i",
+            file_location,
+            "-af",
+            "loudnorm=I=-5:LRA=11:TP=0",
+            "-ac",
+            "1",  # mono
+            "-ar",
+            "8000",  # 8000 Hz
+            "-acodec",
+            "pcm_s16le",
+            tmp_wav.name,
+        ],
+        capture_output=True,
+    )
+
+    if result.returncode != 0:
+        raise HTTPException(status_code=500, detail="Erreur conversion audio")
+
+    return FileResponse(tmp_wav.name, media_type="audio/wav", filename="sound.wav")

@@ -178,18 +178,18 @@ Branchement utilisé :
 
 - VCC → alimentation
 - GND → masse
-- OUT / SIG → D6 sur le FireBeetle ESP32-E
+- OUT → D6 sur le FireBeetle ESP32-E
 
 Ce capteur permet de générer un évènement de type button.
 
-#### Capteur IR SEN0018
-Le capteur IR est utilisé pour de la détection de présence / mouvement.
+#### Capteur Ultrasonic sensor SEN0307 
+Le capteur Ultrasonic est utilisé pour de la détection de présence / mouvement.
 
 Branchement utilisé :
 
 - VCC → alimentation
 - GND → masse
-- OUT / SIG → D5 sur le FireBeetle ESP32-E
+- A → entrée analogique A3 sur le FireBeetle ESP32-E pour mesurer le niveau de mouvement
 
 Ce capteur permet de générer un évènement de type motion.
 
@@ -200,9 +200,20 @@ Branchement utilisé :
 
 - VCC → alimentation
 - GND → masse
-- A → entrée analogique A5 sur le FireBeetle ESP32-E pour mesurer le niveau sonore
+- A → entrée analogique A2 sur le FireBeetle ESP32-E pour mesurer le niveau sonore
 
 Ce capteur permet de mesurer le niveau sonore 
+
+#### Speaker FIT0449
+Ce speaker a été utilisé pour emettre un audio enregistré au préalable via l'interface web.
+
+Branchement utilisé :
+
+- VCC → alimentation
+- GND → masse
+- D → D2 sur le FireBeetle ESP32-E pour permettre l'utilisation de DAC
+
+Cet effecteur permet d'émettre du son
 
 ## PCB
 Pour voir le PCB, il faut copier le dossier dans votre répertoire de projet EasyEDA. Il devrait ensuite apparaître dans le menu de vos projets à gauche. Si, en cliquant sur le PCB, certaines composantes ne s’affichent pas immédiatement, changer la vue des couches permet généralement de les faire apparaître.

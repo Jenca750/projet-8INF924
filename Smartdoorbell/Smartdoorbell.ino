@@ -8,7 +8,7 @@
 
 void setup() {
   Serial.begin(115200);
-  delay(1000);
+  delay(2000);
 
   Serial.println("=== Smart Doorbell ESP32 ===");
 
@@ -18,7 +18,7 @@ void setup() {
   setupUS();
   setupSpeaker();
 
-  //connectWiFi();  
+  connectWiFi();  
 }
 
 void loop() {
