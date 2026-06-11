@@ -1,10 +1,10 @@
 #include "config.h"
 #include "wifi_api.h"
+
 #include "button.h"
-#include "sensor_ir.h"
 #include "sensor_us.h"
-#include "sensor_sound.h"
 #include "speaker.h"
+#include "touch_button.h"
 
 void setup() {
   Serial.begin(115200);
@@ -13,8 +13,7 @@ void setup() {
   Serial.println("=== Smart Doorbell ESP32 ===");
 
   setupButton();
-  setupIR();
-  setupSound();
+  setupTouchButton();
   setupUS();
   setupSpeaker();
 
@@ -24,5 +23,5 @@ void setup() {
 void loop() {
   handleButton();
   handleUS();
-  handleSound();
+  handleTouchButton();
 }

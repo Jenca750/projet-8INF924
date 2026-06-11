@@ -178,7 +178,19 @@ Branchement utilisé :
 
 - VCC → alimentation
 - GND → masse
-- OUT → D6 sur le FireBeetle ESP32-E
+- D → D6 sur le FireBeetle ESP32-E
+
+Ce capteur permet de générer un évènement de type button.
+
+### Capacitive touch sensor DFR0030
+
+Le czpteur de toucher est utilisé en tant que sonette de la même façon que le boutton.
+
+Branchement utilisé :
+
+- VCC → alimentation
+- GND → masse
+- D → D7 sur le FireBeetle ESP32-E
 
 Ce capteur permet de générer un évènement de type button.
 
