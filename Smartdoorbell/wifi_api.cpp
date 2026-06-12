@@ -5,6 +5,7 @@
 
 #include "config.h"
 #include "wifi_api.h"
+#include "speaker.h"
 
 void connectWiFi() {
   Serial.print("Connexion WiFi à ");
@@ -78,6 +79,7 @@ void streamAudio(const char* url) {
     connectWiFi();
     if (WiFi.status() != WL_CONNECTED) {
       Serial.println("WiFi non connecté.");
+      playFallbackRing();
       return;
     }
   }
@@ -92,6 +94,7 @@ void streamAudio(const char* url) {
     Serial.print("Erreur HTTP audio : ");
     Serial.println(httpCode);
     http.end();
+    playFallbackRing();
     return;
   }
 
@@ -114,9 +117,13 @@ void streamAudio(const char* url) {
     int toRead = min((int)sizeof(buf), remaining);
     int bytesRead = stream->readBytes(buf, toRead);
 
-    if (bytesRead <= 0) break;
+    if (bytesRead <= 0) {
+      Serial.println("Stream interrompu.");
+      playFallbackRing();
+      break;
+    }
 
-    float gain = 4.0; // Augmente le son par 4. Ajuste entre 1.0 et 10.0
+    float gain = 4.0;
 
     for (int i = 44; i + 1 < bytesRead; i += 2) {
         int16_t sample = (int16_t)(buf[i] | (buf[i + 1] << 8));
@@ -124,7 +131,7 @@ void streamAudio(const char* url) {
         // Gain numérique
         int32_t amplified = (int32_t)(sample * gain);
         
-        // Clipping (pour éviter de dépasser les limites)
+        // Clipping
         if (amplified > 32767) amplified = 32767;
         if (amplified < -32768) amplified = -32768;
 
