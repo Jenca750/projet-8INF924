@@ -1,24 +1,25 @@
 {
-  "uuid": "94031fbeb2163e7008d4b3978a14fa9e",
-  "path": "Offline/ESP32",
-  "name": "ESP32",
+  "uuid": "680bcf424d4a7b9b343cb174b2ef4f92",
+  "path": "Offline/ESP32_PCB",
+  "name": "ESP32_PCB",
   "content": "",
   "created_at": "2026-06-04 17:51:12",
-  "updated_at": "2026-06-04 20:00:22",
+  "updated_at": "2026-06-21 17:28:56",
   "stick": "",
   "documents": [
     {
-      "uuid": "51e4ef443d0a777a0ba657dd2e78a6ba",
+      "uuid": "ab5ae7fb4c3a1b46149e0e83c89e0521",
       "title": "Diag_PCB_ESP32",
       "description": "",
       "docType": "1",
       "master": "",
       "thumb": "/images/thumb-default.png",
       "components": {
-        "746d6fd58f3445fabdc0960422c9b2d2": 1,
         "70313016c81947afba5a980c5e759f73": 1,
-        "ff30d7d4e8bc41589b9cbe9c644bd867": 1,
-        "a77ab0a9bbc644adb03eadbe7e559bce": 1
+        "f35570b234a844a685777319383172ac": 1,
+        "664c68d27e41452a995f8a6d310b2b3b": 1,
+        "52fdf2eddb2443829a9e978354e0239a": 1,
+        "bd65948c958e4e1385dc0147df22ba64": 1
       },
       "BOM": [
         [
@@ -29,10 +30,10 @@
           "CustomPara"
         ],
         [
-          "MODUL - MAX9814 (DFR0034 Placeholder)",
+          "digital speaker",
           1,
-          "MODUL - MAX9814",
-          "MAX1",
+          "DIGITAL POTENTIOMETER",
+          "FIT0449",
           {
             "Manufacturer Part": "",
             "Manufacturer": "",
@@ -41,10 +42,10 @@
           }
         ],
         [
-          "TTP223B (DFR0029 Placeholder)",
+          "ky-004 BUTTON",
           1,
-          "TTP223B CAPACITIVE DIGITAL TOUCH SENSOR TOUCH BUTTON MODULE",
-          "U1",
+          "KY-004",
+          "KY-004",
           {
             "Manufacturer Part": "",
             "Manufacturer": "",
@@ -53,10 +54,22 @@
           }
         ],
         [
-          "HC-SR505 OUT GND VCC (LCSC equivalent for SEN0018 )",
+          "ULTRASONIC_SENSOR",
           1,
-          "HC-SR505",
-          "U2",
+          "ULTRASONIC SENSOR FOOTPRINT",
+          "SEN0307",
+          {
+            "Manufacturer Part": "SEN0307",
+            "Manufacturer": "Gravity",
+            "Supplier": "Gravity",
+            "Supplier Part": "SEN0307"
+          }
+        ],
+        [
+          "SENZORCAPACITIVTTP223",
+          1,
+          "SENZORCAPACITIVTTP223",
+          "TTP223",
           {
             "Manufacturer Part": "",
             "Manufacturer": "",
@@ -77,26 +90,27 @@
           }
         ]
       ],
-      "updateTime": 1780616968,
+      "updateTime": 1782072337,
       "createTime": 1780609873,
       "histories": [],
       "created_at": "2026-06-04 17:51:13",
-      "updated_at": "2026-06-04 19:49:28"
+      "updated_at": "2026-06-21 16:05:37"
     },
     {
-      "uuid": "baf6ce9ff073497856ac9e6361f68b8f",
-      "puuid": "94031fbeb2163e7008d4b3978a14fa9e",
-      "title": "PCB_ESP32",
-      "filename": "PCB_ESP32.json",
+      "uuid": "efbeba7acef521f2da0951d80bf9c0c4",
+      "puuid": "680bcf424d4a7b9b343cb174b2ef4f92",
+      "title": "PCB_ESP32_PCB",
+      "filename": "PCB_ESP32_PCB.json",
       "description": "",
       "docType": "3",
       "master": "",
       "thumb": "/images/thumb-default.png",
       "components": {
-        "da27c1359b92440498593c214276f87a": 1,
-        "4c24af372a6c4c5da1e90210e21ca313": 1,
-        "0cbbc1f575774e34a79e89fc360105f1": 1,
-        "2adbaf0f93004b1784cf9dc10306fe00": 1
+        "c679ee49fe074156898ba18ce4cd41f1": 1,
+        "b33ef85da96f4cb5b6a0bf2f6183bbf9": 1,
+        "bd09a42afe224c6ab9bea92399d9b907": 1,
+        "2adbaf0f93004b1784cf9dc10306fe00": 1,
+        "c4ff0396c34c423b959696b03558f667": 1
       },
       "BOM": [
         [
@@ -107,10 +121,10 @@
           "CustomPara"
         ],
         [
-          "MODUL - MAX9814 (DFR0034 Placeholder)",
+          "digital speaker",
           1,
-          "MODUL - MAX9814",
-          "MAX1",
+          "DIGITAL SPEAKER MODULE",
+          "FIT0449",
           {
             "Manufacturer Part": "",
             "Manufacturer": "",
@@ -119,10 +133,10 @@
           }
         ],
         [
-          "TTP223B (DFR0029 Placeholder)",
+          "ky-004 BUTTON",
           1,
-          "TTP223B CAPACITIVE DIGITAL TOUCH SENSOR TOUCH BUTTON MODULE",
-          "U1",
+          "KY-004",
+          "KY-004(DFR0029EQ)",
           {
             "Manufacturer Part": "",
             "Manufacturer": "",
@@ -131,10 +145,22 @@
           }
         ],
         [
-          "HC-SR505 OUT GND VCC (LCSC equivalent for SEN0018 )",
+          "ULTRASONIC_SENSOR",
           1,
-          "HC-SR505",
-          "U2",
+          "ULTRASONIC SENSOR FOOTPRINT",
+          "SEN0307",
+          {
+            "Manufacturer Part": "SEN0307",
+            "Manufacturer": "Gravity",
+            "Supplier": "Gravity",
+            "Supplier Part": "SEN0307"
+          }
+        ],
+        [
+          "SENZORCAPACITIVTTP223",
+          1,
+          "SENZORCAPACITIVTTP223",
+          "TTP223(DFR0030EQ)",
           {
             "Manufacturer Part": "",
             "Manufacturer": "",
@@ -155,16 +181,16 @@
           }
         ]
       ],
-      "updateTime": 1780617622,
-      "createTime": 1780616875,
+      "updateTime": 1782076308,
+      "createTime": 1782070824,
       "histories": [],
-      "created_at": "2026-06-04 19:47:55",
-      "updated_at": "2026-06-04 20:00:22"
+      "created_at": "2026-06-21 15:40:24",
+      "updated_at": "2026-06-21 17:11:48"
     }
   ],
   "sort": [],
-  "title": "ESP32",
-  "foldername": "ESP32",
+  "title": "ESP32_PCB",
+  "foldername": "ESP32_PCB",
   "schfilename": "ESP32.json",
-  "schfilemtime": 1780616968537
+  "schfilemtime": 1782072337490
 }
