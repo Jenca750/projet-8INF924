@@ -8,33 +8,19 @@ void setupUS() {
   Serial.println("Capteur ultrasonic initialisé.");
 }
 
-bool validateUS() {
-  int validCount = 0;
-
-  for (int i = 0; i < 3; i++) {
-    int value = analogRead(US_PIN);
-
-    Serial.print("Ultrasonic : ");
-    Serial.println(value);
-
-    if (value > SONIC_THRESHOLD) {
-      validCount++;
-    }
-
-    delay(20);
-  }
-
-  return validCount >= 3;
-}
-
 void handleUS() {
   int value = analogRead(US_PIN);
+  float distance = value*(520/4095.0);
 
-  if (value > SONIC_THRESHOLD) {
+  if(distance < 20.0){
     Serial.println("!!! MOUVEMENT DÉTECTÉ !!!");
-    //sendEvent("mouvement");
+    Serial.println(distance);
+    sendEvent("motion");
     delay(500);
   }
+  
+
+  
 
   delay(100);
 }

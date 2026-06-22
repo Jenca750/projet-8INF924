@@ -3,6 +3,7 @@
 
 #include "button.h"
 #include "sensor_us.h"
+#include "sensor_ir.h"
 #include "speaker.h"
 #include "touch_button.h"
 

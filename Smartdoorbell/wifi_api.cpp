@@ -78,7 +78,6 @@ void streamAudio(const char* url) {
   if (WiFi.status() != WL_CONNECTED) {
     connectWiFi();
     if (WiFi.status() != WL_CONNECTED) {
-      Serial.println("WiFi non connecté.");
       playFallbackRing();
       return;
     }
@@ -91,16 +90,11 @@ void streamAudio(const char* url) {
   int httpCode = http.GET();
 
   if (httpCode != 200) {
-    Serial.print("Erreur HTTP audio : ");
-    Serial.println(httpCode);
     http.end();
     playFallbackRing();
     return;
   }
-
   int totalLen = http.getSize();
-  Serial.print("Taille audio : ");
-  Serial.println(totalLen);
 
   WiFiClient* stream = http.getStreamPtr();
 
@@ -109,8 +103,6 @@ void streamAudio(const char* url) {
   stream->readBytes(header, 44);
   int remaining = totalLen - 44;
 
-  Serial.println("Lecture en streaming...");
-
   uint8_t buf[1024];
 
   while (remaining > 0) {
@@ -118,7 +110,6 @@ void streamAudio(const char* url) {
     int bytesRead = stream->readBytes(buf, toRead);
 
     if (bytesRead <= 0) {
-      Serial.println("Stream interrompu.");
       playFallbackRing();
       break;
     }
@@ -145,5 +136,4 @@ void streamAudio(const char* url) {
 
   dacWrite(SPEAKER_PIN, 128); // silence
   http.end();
-  Serial.println("Lecture terminée. i");
 }
