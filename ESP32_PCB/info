@@ -4,7 +4,7 @@
   "name": "ESP32_PCB",
   "content": "",
   "created_at": "2026-06-04 17:51:12",
-  "updated_at": "2026-06-21 17:28:56",
+  "updated_at": "2026-06-21 20:50:29",
   "stick": "",
   "documents": [
     {
@@ -16,10 +16,17 @@
       "thumb": "/images/thumb-default.png",
       "components": {
         "70313016c81947afba5a980c5e759f73": 1,
-        "f35570b234a844a685777319383172ac": 1,
-        "664c68d27e41452a995f8a6d310b2b3b": 1,
         "52fdf2eddb2443829a9e978354e0239a": 1,
-        "bd65948c958e4e1385dc0147df22ba64": 1
+        "5c1036b53a4146e4841df4ed0a9de8f0": 1,
+        "bb009484ef804a24ac5d18c54b249586": 7,
+        "5cbe824183374fac8e4c1ae848199ce3": 2,
+        "0dd9ff324b4e41feab7ded4a256ea8ee": 1,
+        "24eeb2ceca08480b92b847b6a310acda": 5,
+        "78b0412fdbe64417a4f2635c91aad545": 1,
+        "fcaba4851eda4ca19d4326a668633a30": 1,
+        "5d2e694f44d14bda92fd165337a18ada": 1,
+        "e545f26e87c74952857381bd0bff848e": 1,
+        "2890b0b9671d4919bd749d8b7d567d50": 1
       },
       "BOM": [
         [
@@ -30,10 +37,10 @@
           "CustomPara"
         ],
         [
-          "digital speaker",
-          1,
-          "DIGITAL POTENTIOMETER",
-          "FIT0449",
+          "1uF",
+          3,
+          "C0603",
+          "C1,C2,C3",
           {
             "Manufacturer Part": "",
             "Manufacturer": "",
@@ -42,14 +49,122 @@
           }
         ],
         [
-          "ky-004 BUTTON",
+          "104P",
           1,
-          "KY-004",
-          "KY-004",
+          "C0603",
+          "C4",
           {
             "Manufacturer Part": "",
             "Manufacturer": "",
             "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "4.7uF/10V",
+          1,
+          "CASE-A_3216",
+          "C5",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "30P",
+          1,
+          "C0603",
+          "C6",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "K2-3.6×6.1_SMD",
+          1,
+          "KEY-SMD_2P-L6.2-W3.6-LS8.0",
+          "KEY1",
+          {
+            "Manufacturer Part": "K2-1107ST-A4SW-06",
+            "Manufacturer": "",
+            "Supplier": "LCSC",
+            "Supplier Part": "C118141"
+          }
+        ],
+        [
+          "LED-0603_R",
+          2,
+          "LED0603_RED",
+          "LED1,LED2",
+          {
+            "Manufacturer Part": "19-217/R6C-AL1M2VY/3T",
+            "Manufacturer": "EVERLIGHT(台湾亿光)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C72044"
+          }
+        ],
+        [
+          "1k",
+          3,
+          "R0603",
+          "R1,R2,R6",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "10k",
+          1,
+          "R0603",
+          "R3",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "20K",
+          2,
+          "R0603",
+          "R4,R5",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "470",
+          1,
+          "R0603",
+          "R7",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "50K",
+          1,
+          "RES-ADJ-TH_3386P",
+          "RP1",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "LCSC",
             "Supplier Part": ""
           }
         ],
@@ -66,10 +181,22 @@
           }
         ],
         [
-          "SENZORCAPACITIVTTP223",
+          "LTK8002B",
           1,
-          "SENZORCAPACITIVTTP223",
-          "TTP223",
+          "SOP-8_L4.9-W3.9-P1.27-LS6.0-BL",
+          "U1",
+          {
+            "Manufacturer Part": "LTK8002B",
+            "Manufacturer": "null",
+            "Supplier": "LCSC",
+            "Supplier Part": "C2856206"
+          }
+        ],
+        [
+          "BUZIN",
+          1,
+          "BUZIN",
+          "U2",
           {
             "Manufacturer Part": "",
             "Manufacturer": "",
@@ -88,13 +215,37 @@
             "Supplier": "DFRobot",
             "Supplier Part": "DFR0654"
           }
+        ],
+        [
+          "TTP223-BA6",
+          1,
+          "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL",
+          "U4",
+          {
+            "Manufacturer Part": "TTP223-BA6",
+            "Manufacturer": "null",
+            "Supplier": "LCSC",
+            "Supplier Part": "C80757"
+          }
+        ],
+        [
+          "TOUCH",
+          1,
+          "TOUCH1",
+          "U5",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
         ]
       ],
-      "updateTime": 1782072337,
+      "updateTime": 1782083983,
       "createTime": 1780609873,
       "histories": [],
       "created_at": "2026-06-04 17:51:13",
-      "updated_at": "2026-06-21 16:05:37"
+      "updated_at": "2026-06-21 19:19:43"
     },
     {
       "uuid": "efbeba7acef521f2da0951d80bf9c0c4",
@@ -186,11 +337,253 @@
       "histories": [],
       "created_at": "2026-06-21 15:40:24",
       "updated_at": "2026-06-21 17:11:48"
+    },
+    {
+      "uuid": "6dca89ffc76e9954b5c6390c160441eb",
+      "puuid": "680bcf424d4a7b9b343cb174b2ef4f92",
+      "title": "PCB_ESP32_PCB_2",
+      "filename": "PCB_ESP32_PCB_2.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "f8151fdc728a41ebbc304e11d39e5437": 5,
+        "ce25118ef0b041b8a773e71ca28ae65d": 1,
+        "daacbe2eec304950b61eef2efe596556": 1,
+        "1efb3a885b5b4aecb6d41221a8f4d86b": 2,
+        "398691f1f785460098bbe5ee6590333c": 7,
+        "ce6e0cc9b0684cd986edbf86d7075dfd": 1,
+        "c4ff0396c34c423b959696b03558f667": 1,
+        "1fe0adc377c7472ba321d68db1c050fa": 1,
+        "67b51488524f4e949ecd7766643eb52b": 1,
+        "2adbaf0f93004b1784cf9dc10306fe00": 1,
+        "9a066f903e65476fa74739d5e9b0ceb9": 1,
+        "099ff611aa0247bba10e033e4e5a64ea": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "1uF",
+          3,
+          "C0603",
+          "C1,C2,C3",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "104P",
+          1,
+          "C0603",
+          "C4",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "30P",
+          1,
+          "C0603",
+          "C6",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "4.7uF/10V",
+          1,
+          "CASE-A_3216",
+          "C5",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "K2-3.6×6.1_SMD",
+          1,
+          "KEY-SMD_2P-L6.2-W3.6-LS8.0",
+          "KEY1",
+          {
+            "Manufacturer Part": "K2-1107ST-A4SW-06",
+            "Manufacturer": "",
+            "Supplier": "LCSC",
+            "Supplier Part": "C118141"
+          }
+        ],
+        [
+          "LED-0603_R",
+          2,
+          "LED0603_RED",
+          "LED1,LED2",
+          {
+            "Manufacturer Part": "19-217/R6C-AL1M2VY/3T",
+            "Manufacturer": "EVERLIGHT(台湾亿光)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C72044"
+          }
+        ],
+        [
+          "1k",
+          3,
+          "R0603",
+          "R1,R2,R6",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "10k",
+          1,
+          "R0603",
+          "R3",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "20K",
+          2,
+          "R0603",
+          "R4,R5",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "470",
+          1,
+          "R0603",
+          "R7",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "50K",
+          1,
+          "RES-ADJ-TH_3386P",
+          "RP1",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "LCSC",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "ULTRASONIC_SENSOR",
+          1,
+          "ULTRASONIC SENSOR FOOTPRINT",
+          "SEN0307",
+          {
+            "Manufacturer Part": "SEN0307",
+            "Manufacturer": "Gravity",
+            "Supplier": "Gravity",
+            "Supplier Part": "SEN0307"
+          }
+        ],
+        [
+          "LTK8002B",
+          1,
+          "SOP-8_L4.9-W3.9-P1.27-LS6.0-BL",
+          "U1",
+          {
+            "Manufacturer Part": "LTK8002B",
+            "Manufacturer": "null",
+            "Supplier": "LCSC",
+            "Supplier Part": "C2856206"
+          }
+        ],
+        [
+          "BUZIN",
+          1,
+          "BUZIN",
+          "U2",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "Firebeetle_ESP32_E",
+          1,
+          "FIREBEETLE_ESP32_E_FOOTPRINT",
+          "U3",
+          {
+            "Manufacturer Part": "DFR0654",
+            "Manufacturer": "DFRobot",
+            "Supplier": "DFRobot",
+            "Supplier Part": "DFR0654"
+          }
+        ],
+        [
+          "TTP223-BA6",
+          1,
+          "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL",
+          "U4",
+          {
+            "Manufacturer Part": "TTP223-BA6",
+            "Manufacturer": "null",
+            "Supplier": "LCSC",
+            "Supplier Part": "C80757"
+          }
+        ],
+        [
+          "TOUCH",
+          1,
+          "TOUCH1",
+          "U5",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ]
+      ],
+      "updateTime": 1782089429,
+      "createTime": 1782086582,
+      "histories": [],
+      "created_at": "2026-06-21 20:03:02",
+      "updated_at": "2026-06-21 20:50:29"
     }
   ],
   "sort": [],
   "title": "ESP32_PCB",
   "foldername": "ESP32_PCB",
   "schfilename": "ESP32.json",
-  "schfilemtime": 1782072337490
+  "schfilemtime": 1782083983274
 }
