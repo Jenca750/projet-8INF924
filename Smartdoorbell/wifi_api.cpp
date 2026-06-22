@@ -5,6 +5,7 @@
 
 #include "config.h"
 #include "wifi_api.h"
+#include "speaker.h"
 
 void connectWiFi() {
   Serial.print("Connexion WiFi à ");
@@ -77,7 +78,7 @@ void streamAudio(const char* url) {
   if (WiFi.status() != WL_CONNECTED) {
     connectWiFi();
     if (WiFi.status() != WL_CONNECTED) {
-      Serial.println("WiFi non connecté.");
+      playFallbackRing();
       return;
     }
   }
@@ -89,15 +90,11 @@ void streamAudio(const char* url) {
   int httpCode = http.GET();
 
   if (httpCode != 200) {
-    Serial.print("Erreur HTTP audio : ");
-    Serial.println(httpCode);
     http.end();
+    playFallbackRing();
     return;
   }
-
   int totalLen = http.getSize();
-  Serial.print("Taille audio : ");
-  Serial.println(totalLen);
 
   WiFiClient* stream = http.getStreamPtr();
 
@@ -106,17 +103,18 @@ void streamAudio(const char* url) {
   stream->readBytes(header, 44);
   int remaining = totalLen - 44;
 
-  Serial.println("Lecture en streaming...");
-
   uint8_t buf[1024];
 
   while (remaining > 0) {
     int toRead = min((int)sizeof(buf), remaining);
     int bytesRead = stream->readBytes(buf, toRead);
 
-    if (bytesRead <= 0) break;
+    if (bytesRead <= 0) {
+      playFallbackRing();
+      break;
+    }
 
-    float gain = 4.0; // Augmente le son par 4. Ajuste entre 1.0 et 10.0
+    float gain = 4.0;
 
     for (int i = 44; i + 1 < bytesRead; i += 2) {
         int16_t sample = (int16_t)(buf[i] | (buf[i + 1] << 8));
@@ -124,7 +122,7 @@ void streamAudio(const char* url) {
         // Gain numérique
         int32_t amplified = (int32_t)(sample * gain);
         
-        // Clipping (pour éviter de dépasser les limites)
+        // Clipping
         if (amplified > 32767) amplified = 32767;
         if (amplified < -32768) amplified = -32768;
 
@@ -138,5 +136,4 @@ void streamAudio(const char* url) {
 
   dacWrite(SPEAKER_PIN, 128); // silence
   http.end();
-  Serial.println("Lecture terminée. i");
 }

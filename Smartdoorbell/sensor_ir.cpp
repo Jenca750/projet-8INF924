@@ -12,10 +12,9 @@ void handleIR() {
   int detection = digitalRead(IR_PIN);
 
   if (detection == HIGH) {
-    if(validateUS()){
-      Serial.println("!!! MOUVEMENT DÉTECTÉ !!!");
-      //sendEvent("motion");  
-    }
+    Serial.println("!!! MOUVEMENT DÉTECTÉ !!!");
+    //sendEvent("motion");  
+    
     delay(500); 
   }
 }

@@ -2,13 +2,13 @@
 #define CONFIG_H
 
 // WiFi
-#define WIFI_SSID "BELL415"
-#define WIFI_PASSWORD "6695A47EA425"
+#define WIFI_SSID "OPAL-2.4G"
+#define WIFI_PASSWORD "ZAmRr9jBjRFYC273C5wT"
 
 // API backend
-#define API_URL "http://192.168.2.107:8000/api/events"
-#define AUDIO_URL "http://192.168.2.107:8000/api/sound"
-#define API_TOKEN "212f00c915ed8c3806ca8b796832ac76"
+#define API_URL "http://192.168.8.156:8000/api/events"
+#define AUDIO_URL "http://192.168.8.156:8000/api/sound"
+#define API_TOKEN "3f6a92c6f75b9b7343ac8c72e6215e07"
 
 // Pins FireBeetle ESP32-E
 #define BUTTON_PIN D6

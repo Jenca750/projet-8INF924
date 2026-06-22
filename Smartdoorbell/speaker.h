@@ -3,6 +3,6 @@
 
 void setupSpeaker();
 void playDoorbellSound();
-void playAudioFromUrl(const char* url);
+void playFallbackRing();
 
 #endif
